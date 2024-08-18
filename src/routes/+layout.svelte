@@ -3,7 +3,7 @@
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { Modal } from '@skeletonlabs/skeleton';
 
-	export const ssr = false;
+	export const prerender = true;
 
 	initializeStores();
 </script>

@@ -123,7 +123,7 @@
 	}
 </script>
 
-<div class="container h-full w-full flex justify-center items-center flex-col">
+<div class="h-full w-full flex justify-center items-center flex-col">
 	{#if game_started}
 		<div class="p-4 w-full flex flex-col justify-center items-center">
 			<div class="relative">
@@ -263,6 +263,7 @@
 	{:else}
 		<div class="p-4 w-full flex flex-col justify-center items-center">
 			<p class="text-4xl">{`${hasEvents ? 'Game Finished' : 'Scorekeeper'}`}</p>
+			<!-- svelte-ignore a11y-missing-attribute -->
 			<iframe
 				src="https://giphy.com/embed/KGTTNpVuGVhN6"
 				width="300"
@@ -272,6 +273,7 @@
 				class="giphy-embed"
 				allowFullScreen
 			></iframe>
+
 			<div class="w-4/5 flex justify-between items-center pt-5">
 				<button
 					type="button"
