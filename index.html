@@ -1,22 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="dark">
 	<head>
 		<meta charset="utf-8" />
+		<title>My Awesome App</title>
+		<meta name="description" content="My Awesome App description" />
 		<link rel="icon" href="/nina_scorekeeper/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/nina_scorekeeper/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/nina_scorekeeper/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/nina_scorekeeper/favicon-16x16.png" />
+		<link rel="manifest" href="/nina_scorekeeper/site.webmanifest" />
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="theme-color" content="#ffffff" />
+
 		
-		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/entry/start.Bz2GOhHX.js">
-		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/chunks/entry.HLNzMFd8.js">
-		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/chunks/scheduler.kP84TyxC.js">
-		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/chunks/index.D2GwmibN.js">
-		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/entry/app.Mt9nstEj.js">
-		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/chunks/index.ClIGoNoT.js">
+		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/entry/start.CmxelXJs.js">
+		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/chunks/entry.DbZF6vua.js">
+		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/chunks/scheduler.Bl6bqnqL.js">
+		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/chunks/index.BBuoky1e.js">
+		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/entry/app.CCIr_ypm.js">
+		<link rel="modulepreload" href="/nina_scorekeeper/_app/immutable/chunks/index.vkvyt7xZ.js">
 	</head>
 	<body data-sveltekit-preload-data="hover" data-theme="rocket">
 		<div class="w-full h-full">
 			<script>
 				{
-					__sveltekit_156f81 = {
+					__sveltekit_1la8am7 = {
 						base: "/nina_scorekeeper",
 						assets: "/nina_scorekeeper"
 					};
@@ -24,11 +34,17 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("/nina_scorekeeper/_app/immutable/entry/start.Bz2GOhHX.js"),
-						import("/nina_scorekeeper/_app/immutable/entry/app.Mt9nstEj.js")
+						import("/nina_scorekeeper/_app/immutable/entry/start.CmxelXJs.js"),
+						import("/nina_scorekeeper/_app/immutable/entry/app.CCIr_ypm.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element);
 					});
+
+					if ('serviceWorker' in navigator) {
+						addEventListener('load', function () {
+							navigator.serviceWorker.register('/nina_scorekeeper/service-worker.js');
+						});
+					}
 				}
 			</script>
 		</div>
