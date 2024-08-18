@@ -3,9 +3,10 @@
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { Modal } from '@skeletonlabs/skeleton';
 
+	export const ssr = false;
 
 	initializeStores();
 </script>
 
-<Modal/>
+<Modal />
 <slot />
