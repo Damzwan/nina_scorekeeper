@@ -26,11 +26,18 @@
 	let game_started = false;
 	$: hasEvents = football_events.length != 0;
 
-	function addFootballEvent(team: string, time: number, action: string) {
+	function addFootballEvent(
+		team: string,
+		time: number,
+		action: string,
+		player?: string,
+		player_out?: string,
+		player_in?: string
+	) {
 		if (action == 'goal') team == home_team ? home_score++ : away_score++;
 		football_events = [
 			...football_events,
-			{ team, time: time + (is_second_half ? forty_five_minutes : 0), action }
+			{ team, time: time + (is_second_half ? forty_five_minutes : 0), action, player, player_out, player_in }
 		];
 	}
 
@@ -73,16 +80,21 @@
 		audio.play();
 	}
 
-	import MyCustomComponent from '../modal.svelte';
+	import ChooseTeamModalComponent from '../chooseTeamModal.svelte';
+	import ChooseHomeScorerComponent from '../chooseHomeScorerModal.svelte';
+	import ChooseExchangeModal from '../chooseExchangeModal.svelte';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 	import { football_actions, type FootBallEvent } from '../types';
 	import EditableEventMenu from '../EditableEventMenu.svelte';
 
-	const modalComponent: ModalComponent = { ref: MyCustomComponent };
-	const modal: ModalSettings = {
+	const teamModalComponent: ModalComponent = { ref: ChooseTeamModalComponent };
+	const ChoosePlayerModal: ModalComponent = { ref: ChooseHomeScorerComponent };
+	const ChooseExchangeModalComponent: ModalComponent = { ref: ChooseExchangeModal };
+
+	const chooseTeamModal: ModalSettings = {
 		type: 'component',
-		component: modalComponent,
+		component: teamModalComponent,
 		response: (v: any) => {
 			if (!v) return;
 			home_team = v.home_team_name;
@@ -94,10 +106,46 @@
 			football_events = [];
 		}
 	};
+
+	const chooseScorerModal: ModalSettings = {
+		type: 'component',
+		component: ChoosePlayerModal,
+		response: (v: any) => {
+			if (!v) return;
+			addFootballEvent(`${storedEvent.team}`, storedEvent.time, storedEvent.action, v.player_name);
+		}
+	};
+
+	const chooseExchangerModal: ModalSettings = {
+		type: 'component',
+		component: ChooseExchangeModalComponent,
+		response: (v: any) => {
+			if (!v) return;
+			addFootballEvent(
+				`${storedEvent.team}`,
+				storedEvent.time,
+				storedEvent.action,
+				undefined,
+				v.player_out,
+				v.player_in
+			);
+		}
+	};
 	const modalStore = getModalStore();
 
 	function startMatch() {
-		modalStore.trigger(modal);
+		modalStore.trigger(chooseTeamModal);
+	}
+
+	let storedEvent: any = {};
+	function openScorerModal(team: string, time: number, action: string) {
+		storedEvent = { team, time, action };
+		modalStore.trigger(chooseScorerModal);
+	}
+
+	function openExchangeModal(team: string, time: number, action: string) {
+		storedEvent = { team, time, action };
+		modalStore.trigger(chooseExchangerModal);
 	}
 
 	function createCSV() {
@@ -236,7 +284,11 @@
 						disabled={!is_running}
 						type="button"
 						class="btn variant-filled-primary rounded-md"
-						on:click={() => addFootballEvent(home_team, current_time, action)}>{action}</button
+						on:click={() => {
+							if (action == 'goal') openScorerModal(home_team, current_time, action);
+							else if (action == 'wissel') openExchangeModal(home_team, current_time, action);
+							else addFootballEvent(home_team, current_time, action);
+						}}>{action}</button
 					>
 				{/each}
 			</div>
@@ -249,7 +301,11 @@
 						disabled={!is_running}
 						type="button"
 						class="btn variant-filled-tertiary rounded-md"
-						on:click={() => addFootballEvent(away_team, current_time, action)}>{action}</button
+						on:click={() => {
+							if (action == 'goal') openScorerModal(home_team, current_time, action);
+							else if (action == 'wissel') openExchangeModal(home_team, current_time, action);
+							else addFootballEvent(home_team, current_time, action);
+						}}>{action}</button
 					>
 				{/each}
 			</div>
@@ -258,7 +314,13 @@
 		<div class="p-4 w-full">
 			<hr class="!border-t-2 w-full" />
 
-			<EditableEventMenu {football_events} {home_team} {away_team} />
+			<EditableEventMenu
+				bind:football_events
+				{home_team}
+				{away_team}
+				bind:away_score
+				bind:home_score
+			/>
 		</div>
 	{:else}
 		<div class="p-4 w-full flex flex-col justify-center items-center">
@@ -292,7 +354,13 @@
 			</div>
 			<hr class="!border-t-2 w-full mt-4" />
 
-			<EditableEventMenu {football_events} {home_team} {away_team} />
+			<EditableEventMenu
+				bind:football_events
+				{home_team}
+				{away_team}
+				bind:away_score
+				bind:home_score
+			/>
 		</div>
 	{/if}
 </div>

@@ -4,6 +4,8 @@
 	export let football_events: FootBallEvent[] = [];
 	export let home_team: string;
 	export let away_team: string;
+	export let home_score: number;
+	export let away_score: number;
 
 	let editMode = false;
 
@@ -19,6 +21,8 @@
 	}
 
 	function deleteEvent(index: number) {
+		if (football_events[index].action == 'goal')
+			football_events[index].team == home_team ? home_score-- : away_score--;
 		football_events = football_events.filter((_, i) => i !== index);
 	}
 
@@ -87,7 +91,7 @@
 						value={Math.floor(event.time / 60)}
 						class="input input-bordered w-10"
 						placeholder="MM"
-						on:input={(e) =>
+						on:change={(e) =>
 							updateEventTime(football_events.length - i - 1, +e.target.value, event.time % 60)}
 					/>
 					:
@@ -98,7 +102,7 @@
 						value={event.time % 60}
 						class="input input-bordered w-12"
 						placeholder="SS"
-						on:input={(e) =>
+						on:change={(e) =>
 							updateEventTime(
 								football_events.length - i - 1,
 								Math.floor(event.time / 60),
@@ -126,6 +130,37 @@
 							<option value={action}>{action}</option>
 						{/each}
 					</select>
+
+					{#if event.player}
+						<input
+							type="string"
+							value={event.player}
+							class="input input-bordered w-20"
+							placeholder="Aku"
+							on:change={(e) =>
+								updateEvent(football_events.length - i - 1, 'player', e.target.value)}
+						/>
+					{/if}
+
+					{#if event.player_out}
+						<input
+							type="string"
+							value={event.player_out}
+							class="input input-bordered w-20"
+							placeholder="Aku"
+							on:change={(e) =>
+								updateEvent(football_events.length - i - 1, 'player_out', e.target.value)}
+						/>
+
+						<input
+							type="string"
+							value={event.player_in}
+							class="input input-bordered w-20"
+							placeholder="Aku"
+							on:change={(e) =>
+								updateEvent(football_events.length - i - 1, 'player_in', e.target.value)}
+						/>
+					{/if}
 
 					<button
 						on:click={() => deleteEvent(football_events.length - i - 1)}
@@ -158,6 +193,8 @@
 				<p>
 					{Math.floor(event.time / 60)}:{String(event.time % 60).padStart(2, '0')} -
 					{event.team.substring(0, 1).toUpperCase()}. {event.action}
+					{event.player ? `(${event.player})` : ''}
+					{event.player_out ? `(out: ${event.player_out}, in: ${event.player_in})` : ''}
 				</p>
 			{/each}
 		{/if}
