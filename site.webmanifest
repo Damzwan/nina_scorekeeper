@@ -1,6 +1,7 @@
 {
 	"name": "Scorekeeper",
 	"short_name": "Scorekeeper",
+	"description": "Counting them scores",
 	"icons": [
 		{
 			"src": "android-chrome-192x192.png",
@@ -25,7 +26,7 @@
 			"form_factor": "narrow",
 			"label": "Wonder Widgets"
 		},
-        {
+		{
 			"src": "./screenshots/1.png",
 			"sizes": "1082x2402",
 			"type": "image/png",
