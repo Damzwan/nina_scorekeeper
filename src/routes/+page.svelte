@@ -302,9 +302,9 @@
 						type="button"
 						class="btn variant-filled-tertiary rounded-md"
 						on:click={() => {
-							if (action == 'goal') openScorerModal(home_team, current_time, action);
-							else if (action == 'wissel') openExchangeModal(home_team, current_time, action);
-							else addFootballEvent(home_team, current_time, action);
+							if (action == 'goal') openScorerModal(away_team, current_time, action);
+							else if (action == 'wissel') openExchangeModal(away_team, current_time, action);
+							else addFootballEvent(away_team, current_time, action);
 						}}>{action}</button
 					>
 				{/each}
